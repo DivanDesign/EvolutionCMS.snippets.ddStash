@@ -1,0 +1,15 @@
+{
+	"name": "dd/evolutioncms-snippets-ddstash",
+	"type": "modxevo-snippet",
+	"version": "1.0",
+	"description": "Сохранение данных для последующего использования.",
+	"keywords": [
+		"modx",
+		"modx evo",
+		"modx evolution",
+		"evo",
+		"evo cms",
+		"evolution cms",
+		"ddstash"
+	]
+}
