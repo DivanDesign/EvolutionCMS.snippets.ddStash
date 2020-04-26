@@ -27,10 +27,10 @@ Elements → Snippets: Create a new snippet with the following data:
 ### Parameters description
 
 * `save`
-	* Desctription: Data to save in stash. Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
+	* Desctription: Data to save in stash. Nested objects are supported too, see examples below.
 	* Valid values:
-		* `stirng_json` — as [JSON](https://en.wikipedia.org/wiki/JSON)
-		* `string_queryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* `stirngJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
 	* Default value: —
 	
 * `get`
