@@ -3,16 +3,17 @@
 Сохранение данных для последующего использования.
 
 
-## # Requires
+## Requires
+
 * PHP >= 5.4
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
 * [(MODX)EvolutionCMS.libraries.ddTools](http://code.divandesign.biz/modx/ddtools) >= 0.28
 
 
-## # Documentation
+## Documentation
 
 
-### ## Installation
+### Installation
 
 Elements → Snippets: Create a new snippet with the following data:
 
@@ -23,7 +24,7 @@ Elements → Snippets: Create a new snippet with the following data:
 5. Snippet code (php): Insert content of the `ddStash_snippet.php` file from the archive.
 
 
-### ## Parameters description
+### Parameters description
 
 * `save`
 	* Desctription: Data to save in stash. Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
@@ -56,10 +57,10 @@ Elements → Snippets: Create a new snippet with the following data:
 	* Default value: `'post'`
 
 
-### ## Examples
+### Examples
 
 
-#### ### Save some data
+#### Save some data
 
 ```
 [[ddStash?
@@ -77,10 +78,13 @@ Elements → Snippets: Create a new snippet with the following data:
 ```
 
 	
-#### ### Get saved data
+#### Get saved data
 
 ```
 [[ddStash? &get=`userData.name`]]
 ```
 
 Returns `John`.
+
+
+<link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
