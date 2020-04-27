@@ -66,11 +66,19 @@ Elements → Snippets: Create a new snippet with the following data:
 [[ddStash?
 	&save=`{
 		"userData": {
-			"name": "John",
-			"photo": "[[ddGetDocumentField?
+			"firstName": "John",
+			"lastName": "[[ddGetDocumentField?
 				&docId=`1`
-				&docField=`photo`
-			]]"
+				&docField=`lastName`
+			]]",
+			"children": [
+				{
+					"firstName": "Alice"
+				},
+				{
+					"firstName": "Robert"
+				}
+			]
 		},
 		"someData": "someValue"
 	}`
@@ -80,11 +88,90 @@ Elements → Snippets: Create a new snippet with the following data:
 	
 #### Get saved data
 
+
+##### You can get field value in any depth
+
 ```
-[[ddStash? &get=`userData.name`]]
+[[ddStash? &get=`someData`]]
+```
+
+Returns `someValue`.
+
+```
+[[ddStash? &get=`userData.firstName`]]
 ```
 
 Returns `John`.
+
+```
+[[ddStash? &get=`userData.children.0.firstName`]]
+```
+
+Returns `Alice`.
+
+
+##### Also you can get objects in JSON
+
+If field value is object or array, it will be returned in JSON format.
+
+
+###### Get first John child
+
+```
+[[ddStash? &get=`userData.children.0`]]
+```
+
+Returns:
+
+```json
+{
+	"firstName": "Alice"
+}
+```
+
+
+###### Get all John children:
+
+```
+[[ddStash? &get=`userData.children`]]
+```
+
+Returns:
+
+```json
+[
+	{
+		"firstName": "Alice"
+	},
+	{
+		"firstName": "Robert"
+	}
+]
+```
+
+
+###### Get all data about John
+
+```
+[[ddStash? &get=`userData`]]
+```
+
+Returns:
+
+```json
+{
+	"firstName": "John",
+	"lastName": "Doe",
+	"children": [
+		{
+			"firstName": "Alice"
+		},
+		{
+			"firstName": "Robert"
+		}
+	]
+}
+```
 
 
 <link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
