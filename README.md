@@ -7,7 +7,7 @@
 
 * PHP >= 5.4
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](http://code.divandesign.biz/modx/ddtools) >= 0.28
+* [(MODX)EvolutionCMS.libraries.ddTools](http://code.divandesign.biz/modx/ddtools) >= 0.33.1
 
 
 ## Documentation
@@ -32,6 +32,13 @@ Elements → Snippets: Create a new snippet with the following data:
 		* `stirngJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
 		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
 	* Default value: —
+	
+* `save_extendExisting`
+	* Desctription: Extend an existing object instead of overwriting it.
+	* Valid values:
+		* `0`
+		* `1`
+	* Default value: `0`
 	
 * `get`
 	* Desctription: Data key for getting from stash.
@@ -162,6 +169,96 @@ Returns:
 {
 	"firstName": "John",
 	"lastName": "Doe",
+	"children": [
+		{
+			"firstName": "Alice"
+		},
+		{
+			"firstName": "Robert"
+		}
+	]
+}
+```
+
+
+#### Save: Extend an existing object instead of overwriting it (``&save_extendExisting=`1` ``)
+
+First you save some object:
+
+```
+[[ddStash?
+	&save=`{
+		"userData": {
+			"firstName": "Chuck",
+			"lastName": "Doe",
+			"children": [
+				{
+					"firstName": "Alice"
+				},
+				{
+					"firstName": "Robert"
+				}
+			]
+		}
+	}`
+]]
+```
+
+Then if you just save object with the same key (`userData`):
+
+```
+[[ddStash?
+	&save=`{
+		"userData": {
+			"middleName": "Ray",
+			"lastName": "Norris"
+		}
+	}`
+]]
+```
+
+The snippet will overwrite previous saved object completely:
+
+```
+[[ddStash? &get=`userData`]]
+```
+
+Returns:
+
+```json
+{
+	"middleName": "Ray",
+	"lastName": "Norris"
+}
+```
+
+So, if you want to extend the first object just use the `save_extendExisting` parameter:
+
+```
+[[ddStash?
+	&save=`{
+		"userData": {
+			"middleName": "Ray",
+			"lastName": "Norris"
+		}
+	}`
+	&save_extendExisting=`1`
+]]
+```
+
+In this case the snippet will recursive extend the first object with the data from the second:
+
+```
+[[ddStash? &get=`userData`]]
+```
+
+Returns:
+
+```json
+{
+	"firstName": "Chuck",
+	"middleName": "Ray",
+	"lastName": "Norris",
 	"children": [
 		{
 			"firstName": "Alice"

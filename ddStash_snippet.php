@@ -37,6 +37,12 @@ switch ($storage){
 
 //Save to stash
 if (isset($save)){
+	$save_extendExisting =
+		isset($save_extendExisting) ?
+		boolval($save_extendExisting) :
+		false
+	;
+	
 	$save = \ddTools::encodedStringToArray($save);
 	
 	foreach (
@@ -44,7 +50,25 @@ if (isset($save)){
 		$dataName =>
 		$dataValue
 	){
-		$storage['ddStash.' . $dataName] = $dataValue;
+		$dataName =
+			'ddStash.' .
+			$dataName
+		;
+		
+		//If need to extend existing
+		if (
+			$save_extendExisting &&
+			isset($storage[$dataName])
+		){
+			$storage[$dataName] = \DDTools\ObjectTools::extend([
+				'objects' => [
+					$storage[$dataName],
+					$dataValue
+				]
+			]);
+		}else{
+			$storage[$dataName] = $dataValue;
+		}
 	}
 }
 
