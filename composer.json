@@ -1,8 +1,8 @@
 {
 	"name": "dd/evolutioncms-snippets-ddstash",
 	"type": "modxevo-snippet",
-	"version": "1.0",
-	"description": "Сохранение данных для последующего использования.",
+	"version": "1.1.0",
+	"description": "Save data as JSON or QueryString, then extend if needed and use it later without database queries.",
 	"keywords": [
 		"modx",
 		"modx evo",
@@ -10,6 +10,11 @@
 		"evo",
 		"evo cms",
 		"evolution cms",
-		"ddstash"
-	]
+		"ddstash",
+		"stash"
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"dd/modxevo-library-ddtools": ">=0.33.1"
+	}
 }

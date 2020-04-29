@@ -1,36 +1,44 @@
 # (MODX)EvolutionCMS.snippets.ddStash
 
-Сохранение данных для последующего использования.
+Save data as JSON or QueryString, then extend if needed and use it later without database queries.
 
 
-## # Requires
+## Requires
+
 * PHP >= 5.4
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](http://code.divandesign.biz/modx/ddtools) >= 0.28
+* [(MODX)EvolutionCMS.libraries.ddTools](http://code.divandesign.biz/modx/ddtools) >= 0.33.1
 
 
-## # Documentation
+## Documentation
 
 
-### ## Installation
+### Installation
 
 Elements → Snippets: Create a new snippet with the following data:
 
 1. Snippet name: `ddStash`.
-2. Description: `<b>1.0</b> Сохранение данных для последующего использования.`.
+2. Description: `<b>1.1</b> Save data as JSON or QueryString, then extend if needed and use it later without database queries.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddStash_snippet.php` file from the archive.
 
 
-### ## Parameters description
+### Parameters description
 
 * `save`
-	* Desctription: Data to save in stash. Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
+	* Desctription: Data to save in stash. Nested objects are supported too, see examples below.
 	* Valid values:
-		* `stirng_json` — as [JSON](https://en.wikipedia.org/wiki/JSON)
-		* `string_queryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* `stirngJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
 	* Default value: —
+	
+* `save_extendExisting`
+	* Desctription: Extend an existing object instead of overwriting it.
+	* Valid values:
+		* `0`
+		* `1`
+	* Default value: `0`
 	
 * `get`
 	* Desctription: Data key for getting from stash.
@@ -56,20 +64,28 @@ Elements → Snippets: Create a new snippet with the following data:
 	* Default value: `'post'`
 
 
-### ## Examples
+### Examples
 
 
-#### ### Save some data
+#### Save some data
 
 ```
 [[ddStash?
 	&save=`{
 		"userData": {
-			"name": "John",
-			"photo": "[[ddGetDocumentField?
+			"firstName": "John",
+			"lastName": "[[ddGetDocumentField?
 				&docId=`1`
-				&docField=`photo`
-			]]"
+				&docField=`lastName`
+			]]",
+			"children": [
+				{
+					"firstName": "Alice"
+				},
+				{
+					"firstName": "Robert"
+				}
+			]
 		},
 		"someData": "someValue"
 	}`
@@ -77,10 +93,182 @@ Elements → Snippets: Create a new snippet with the following data:
 ```
 
 	
-#### ### Get saved data
+#### Get saved data
+
+
+##### You can get field value in any depth
 
 ```
-[[ddStash? &get=`userData.name`]]
+[[ddStash? &get=`someData`]]
+```
+
+Returns `someValue`.
+
+```
+[[ddStash? &get=`userData.firstName`]]
 ```
 
 Returns `John`.
+
+```
+[[ddStash? &get=`userData.children.0.firstName`]]
+```
+
+Returns `Alice`.
+
+
+##### Also you can get objects in JSON
+
+If field value is object or array, it will be returned in JSON format.
+
+
+###### Get first John child
+
+```
+[[ddStash? &get=`userData.children.0`]]
+```
+
+Returns:
+
+```json
+{
+	"firstName": "Alice"
+}
+```
+
+
+###### Get all John children:
+
+```
+[[ddStash? &get=`userData.children`]]
+```
+
+Returns:
+
+```json
+[
+	{
+		"firstName": "Alice"
+	},
+	{
+		"firstName": "Robert"
+	}
+]
+```
+
+
+###### Get all data about John
+
+```
+[[ddStash? &get=`userData`]]
+```
+
+Returns:
+
+```json
+{
+	"firstName": "John",
+	"lastName": "Doe",
+	"children": [
+		{
+			"firstName": "Alice"
+		},
+		{
+			"firstName": "Robert"
+		}
+	]
+}
+```
+
+
+#### Save: Extend an existing object instead of overwriting it (``&save_extendExisting=`1` ``)
+
+First you save some object:
+
+```
+[[ddStash?
+	&save=`{
+		"userData": {
+			"firstName": "Chuck",
+			"lastName": "Doe",
+			"children": [
+				{
+					"firstName": "Alice"
+				},
+				{
+					"firstName": "Robert"
+				}
+			]
+		}
+	}`
+]]
+```
+
+Then if you just save object with the same key (`userData`):
+
+```
+[[ddStash?
+	&save=`{
+		"userData": {
+			"middleName": "Ray",
+			"lastName": "Norris"
+		}
+	}`
+]]
+```
+
+The snippet will overwrite previous saved object completely:
+
+```
+[[ddStash? &get=`userData`]]
+```
+
+Returns:
+
+```json
+{
+	"middleName": "Ray",
+	"lastName": "Norris"
+}
+```
+
+So, if you want to extend the first object just use the `save_extendExisting` parameter:
+
+```
+[[ddStash?
+	&save=`{
+		"userData": {
+			"middleName": "Ray",
+			"lastName": "Norris"
+		}
+	}`
+	&save_extendExisting=`1`
+]]
+```
+
+In this case the snippet will recursive extend the first object with the data from the second:
+
+```
+[[ddStash? &get=`userData`]]
+```
+
+Returns:
+
+```json
+{
+	"firstName": "Chuck",
+	"middleName": "Ray",
+	"lastName": "Norris",
+	"children": [
+		{
+			"firstName": "Alice"
+		},
+		{
+			"firstName": "Robert"
+		}
+	]
+}
+```
+
+
+<link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
