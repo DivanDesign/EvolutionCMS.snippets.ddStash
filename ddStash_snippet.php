@@ -1,11 +1,11 @@
 <?php
 /**
  * ddStash
- * @version 1.0 (2019-10-31)
+ * @version 1.1 (2020-04-29)
  * 
  * @see README.md
  * 
- * @copyright 2019 DivanDesign {@link http://www.DivanDesign.biz }
+ * @copyright 2019–2020 DD Group {@link http://www.DivanDesign.biz }
  */
 
 //Include (MODX)EvolutionCMS.libraries.ddTools

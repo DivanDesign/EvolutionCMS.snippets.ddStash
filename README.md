@@ -1,6 +1,6 @@
 # (MODX)EvolutionCMS.snippets.ddStash
 
-Сохранение данных для последующего использования.
+Save data as JSON or QueryString, then extend if needed and use it later without database queries.
 
 
 ## Requires
@@ -18,7 +18,7 @@
 Elements → Snippets: Create a new snippet with the following data:
 
 1. Snippet name: `ddStash`.
-2. Description: `<b>1.0</b> Сохранение данных для последующего использования.`.
+2. Description: `<b>1.1</b> Save data as JSON or QueryString, then extend if needed and use it later without database queries.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddStash_snippet.php` file from the archive.
