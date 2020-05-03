@@ -1,7 +1,7 @@
 <?php
 /**
  * ddStash
- * @version 1.1 (2020-04-29)
+ * @version 1.2 (2020-05-03)
  * 
  * @see README.md
  * 
@@ -42,6 +42,14 @@ if (isset($save)){
 		boolval($save_extendExisting) :
 		false
 	;
+	$save_extendExistingWithEmpty =
+		(
+			isset($save_extendExistingWithEmpty) &&
+			$save_extendExistingWithEmpty == '0'
+		) ?
+		false :
+		true
+	;
 	
 	$save = \ddTools::encodedStringToArray($save);
 	
@@ -64,7 +72,8 @@ if (isset($save)){
 				'objects' => [
 					$storage[$dataName],
 					$dataValue
-				]
+				],
+				'overwriteWithEmpty' => $save_extendExistingWithEmpty
 			]);
 		}else{
 			$storage[$dataName] = $dataValue;

@@ -1,13 +1,13 @@
 # (MODX)EvolutionCMS.snippets.ddStash
 
-Save data as JSON or QueryString, then extend if needed and use it later without database queries.
+Save data as [JSON](https://en.wikipedia.org/wiki/JSON) or [Query string](https://en.wikipedia.org/wiki/Query_string), then extend if needed and use it later without database queries.
 
 
 ## Requires
 
 * PHP >= 5.4
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](http://code.divandesign.biz/modx/ddtools) >= 0.33.1
+* [(MODX)EvolutionCMS.libraries.ddTools](http://code.divandesign.biz/modx/ddtools) >= 0.34
 
 
 ## Documentation
@@ -18,7 +18,7 @@ Save data as JSON or QueryString, then extend if needed and use it later without
 Elements → Snippets: Create a new snippet with the following data:
 
 1. Snippet name: `ddStash`.
-2. Description: `<b>1.1</b> Save data as JSON or QueryString, then extend if needed and use it later without database queries.`.
+2. Description: `<b>1.2</b> Save data as JSON or QueryString, then extend if needed and use it later without database queries.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddStash_snippet.php` file from the archive.
@@ -40,6 +40,18 @@ Elements → Snippets: Create a new snippet with the following data:
 		* `1`
 	* Default value: `0`
 	
+* `save_extendExistingWithEmpty`
+	* Desctription: Overwrite fields with empty values (see examples below).  
+		The following values are considered to be empty:
+		* `""` — an empty string
+		* `[]` — an empty array
+		* `{}` — an empty object
+		* `null`
+	* Valid values:
+		* `0`
+		* `1`
+	* Default value: `1`
+	
 * `get`
 	* Desctription: Data key for getting from stash.
 	* Valid values: `string`
@@ -49,10 +61,10 @@ Elements → Snippets: Create a new snippet with the following data:
 	* Desctription: Output template.
 		
 		Available placeholders:
-		* `[+snippetResult+]` — Data from stash.
+		* `[+snippetResult+]` — data from stash
 		
 	* Valid values:
-		* `string_chunkName`
+		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* Default value: `'@CODE:[+snippetResult+]'`
 	
@@ -267,6 +279,78 @@ Returns:
 			"firstName": "Robert"
 		}
 	]
+}
+```
+
+
+#### Save: Extend without overwriting fields with empty values (``&save_extendExistingWithEmpty=`0` ``)
+
+By default, empty field values (e. g. `''`) are treated as other values and will replace non-empty ones.
+
+```
+[[ddStash?
+	&save=`{
+		"userData": {
+			"firstName": "John",
+			"lastName": "Tesla",
+			"discipline": "Electrical engineering"
+		}
+	}`
+]]
+[[ddStash?
+	&save=`{
+		"userData": {
+			"firstName": "Nikola",
+			"lastName": ""
+		}
+	}`
+	&save_extendExisting=`1`
+]]
+```
+
+Returns:
+
+```json
+{
+	"firstName" => "Nikola",
+	"lastName" => "",
+	"discipline" => "Electrical engineering"
+}
+```
+
+Empty `lastName` from the second object replaced non-empty `lastName` from the first.
+
+If you want to ignore empty values, just use `save_extendExistingWithEmpty` == `0`:
+
+```php
+[[ddStash?
+	&save=`{
+		"userData": {
+			"firstName": "John",
+			"lastName": "Tesla",
+			"discipline": "Electrical engineering"
+		}
+	}`
+]]
+[[ddStash?
+	&save=`{
+		"userData": {
+			"firstName": "Nikola",
+			"lastName": ""
+		}
+	}`
+	&save_extendExisting=`1`
+	&save_extendExistingWithEmpty=`0`
+]]
+```
+
+Returns:
+
+```json
+{
+	"firstName" => "Nikola",
+	"lastName" => "Tesla",
+	"discipline" => "Electrical engineering"
 }
 ```
 
