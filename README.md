@@ -1,6 +1,6 @@
 # (MODX)EvolutionCMS.snippets.ddStash
 
-Save data as JSON or QueryString, then extend if needed and use it later without database queries.
+Save data as [JSON](https://en.wikipedia.org/wiki/JSON) or [Query string](https://en.wikipedia.org/wiki/Query_string), then extend if needed and use it later without database queries.
 
 
 ## Requires
@@ -61,10 +61,10 @@ Elements → Snippets: Create a new snippet with the following data:
 	* Desctription: Output template.
 		
 		Available placeholders:
-		* `[+snippetResult+]` — Data from stash.
+		* `[+snippetResult+]` — data from stash
 		
 	* Valid values:
-		* `string_chunkName`
+		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* Default value: `'@CODE:[+snippetResult+]'`
 	
