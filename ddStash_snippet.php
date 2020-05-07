@@ -1,7 +1,7 @@
 <?php
 /**
  * ddStash
- * @version 1.2 (2020-05-03)
+ * @version 1.2.1 (2020-05-08)
  * 
  * @see README.md
  * 
@@ -105,11 +105,17 @@ if (isset($get)){
 			$key
 		){
 			//If need to see deeper
-			if (
-				is_array($snippetResult) &&
-				isset($snippetResult[$key])
-			){
-				$snippetResult = $snippetResult[$key];
+			if (is_array($snippetResult)){
+				//If element exists
+				if (isset($snippetResult[$key])){
+					//Save it
+					$snippetResult = $snippetResult[$key];
+				}else{
+					//Return empty string for non-existing elements
+					$snippetResult = '';
+					
+					break;
+				}
 			}else{
 				break;
 			}
