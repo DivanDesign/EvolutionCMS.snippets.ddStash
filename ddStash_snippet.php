@@ -1,7 +1,7 @@
 <?php
 /**
  * ddStash
- * @version 1.2 (2020-05-03)
+ * @version 1.2.1 (2020-05-08)
  * 
  * @see README.md
  * 

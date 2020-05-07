@@ -1,6 +1,10 @@
 # (MODX)EvolutionCMS.snippets.ddStash changelog
 
 
+## Version 1.2.1 (2020-05-08)
+* \* When you try to get non existent elements, an empty string will be returned.
+
+
 ## Version 1.2 (2020-05-03)
 * \+ Added the ability to prevent overwriting fields with empty values (the `save_extendExistingWithEmpty` parameter, see README).
 * \+ README_ru.
