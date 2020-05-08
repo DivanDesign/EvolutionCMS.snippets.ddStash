@@ -312,9 +312,9 @@ Returns:
 
 ```json
 {
-	"firstName" => "Nikola",
-	"lastName" => "",
-	"discipline" => "Electrical engineering"
+	"firstName": "Nikola",
+	"lastName": "",
+	"discipline": "Electrical engineering"
 }
 ```
 
@@ -348,9 +348,9 @@ Returns:
 
 ```json
 {
-	"firstName" => "Nikola",
-	"lastName" => "Tesla",
-	"discipline" => "Electrical engineering"
+	"firstName": "Nikola",
+	"lastName": "Tesla",
+	"discipline": "Electrical engineering"
 }
 ```
 

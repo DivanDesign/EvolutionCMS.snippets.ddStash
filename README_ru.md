@@ -312,9 +312,9 @@
 
 ```json
 {
-	"firstName" => "Никола",
-	"lastName" => "",
-	"discipline" => "Электротехника"
+	"firstName": "Никола",
+	"lastName": "",
+	"discipline": "Электротехника"
 }
 ```
 
@@ -348,9 +348,9 @@
 
 ```json
 {
-	"firstName" => "Никола",
-	"lastName" => "Тесла",
-	"discipline" => "Электротехника"
+	"firstName": "Никола",
+	"lastName": "Тесла",
+	"discipline": "Электротехника"
 }
 ```
 
