@@ -13,8 +13,23 @@
 		"ddstash",
 		"stash"
 	],
+	"homepage": "https://code.divandesign.biz/modx/ddstash",
+	"authors": [
+		{
+			"name": "DD Group",
+			"email": "code@DivanDesign.biz",
+			"homepage": "https://code.divandesign.biz",
+			"role": "Owner"
+		},
+		{
+			"name": "Ilyas Ronef",
+			"email": "ilyas@DivanDesign.ru",
+			"homepage": "https://ronef.ru",
+			"role": "Developer"
+		}
+	],
 	"require": {
 		"php": ">=5.4.0",
-		"dd/modxevo-library-ddtools": ">=0.34.0"
+		"dd/evolutioncms-libraries-ddtools": ">=0.34.0"
 	}
 }
