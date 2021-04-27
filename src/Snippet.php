@@ -60,104 +60,128 @@ class Snippet extends \DDTools\Snippet {
 		
 		//Save to stash
 		if (!is_null($this->params->save)){
-			$this->params->save = \DDTools\ObjectTools::convertType([
-				'object' => $this->params->save,
-				'type' => 'objectArray'
-			]);
-			
-			foreach (
-				$this->params->save as
-				$dataName =>
-				$dataValue
-			){
-				$dataName =
-					'ddStash.' .
-					$dataName
-				;
-				
-				//If need to extend existing
-				if (
-					$this->params->save_extendExisting &&
-					isset($this->storage[$dataName])
-				){
-					$this->storage[$dataName] = \DDTools\ObjectTools::extend([
-						'objects' => [
-							$this->storage[$dataName],
-							$dataValue
-						],
-						'overwriteWithEmpty' => $this->params->save_extendExistingWithEmpty
-					]);
-				}else{
-					$this->storage[$dataName] = $dataValue;
-				}
-			}
+			$this->run_save();
 		}
 		
 		//Get from stash
 		if (!is_null($this->params->get)){
-			//Unfolding support (e. g. `parentKey.someKey.0`)
-			$keys =	explode(
-				'.',
-				$this->params->get
-			);
-			
-			//Correct parent key
-			$keys[0] =
+			$result = $this->run_get();
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * run_save
+	 * @version 1.0 (2021-04-28)
+	 * 
+	 * @return {void}
+	 */
+	private function run_save(){
+		$this->params->save = \DDTools\ObjectTools::convertType([
+			'object' => $this->params->save,
+			'type' => 'objectArray'
+		]);
+		
+		foreach (
+			$this->params->save as
+			$dataName =>
+			$dataValue
+		){
+			$dataName =
 				'ddStash.' .
-				$keys[0]
+				$dataName
 			;
 			
-			//If parent exists
-			if (isset($this->storage[$keys[0]])){
-				$result = $this->storage;
-				
-				//Find needed value
-				foreach (
-					$keys as
-					$key
-				){
-					//If need to see deeper
-					if (is_array($result)){
-						//If element exists
-						if (isset($result[$key])){
-							//Save it
-							$result = $result[$key];
-						}else{
-							//Return empty string for non-existing elements
-							$result = '';
-							
-							break;
-						}
+			//If need to extend existing
+			if (
+				$this->params->save_extendExisting &&
+				isset($this->storage[$dataName])
+			){
+				$this->storage[$dataName] = \DDTools\ObjectTools::extend([
+					'objects' => [
+						$this->storage[$dataName],
+						$dataValue
+					],
+					'overwriteWithEmpty' => $this->params->save_extendExistingWithEmpty
+				]);
+			}else{
+				$this->storage[$dataName] = $dataValue;
+			}
+		}
+	}
+	
+	/**
+	 * run_get
+	 * @version 1.0 (2021-04-28)
+	 * 
+	 * @return {string}
+	 */
+	private function run_get(){
+		$result = '';
+		
+		//Unfolding support (e. g. `parentKey.someKey.0`)
+		$keys =	explode(
+			'.',
+			$this->params->get
+		);
+		
+		//Correct parent key
+		$keys[0] =
+			'ddStash.' .
+			$keys[0]
+		;
+		
+		//If parent exists
+		if (isset($this->storage[$keys[0]])){
+			$result = $this->storage;
+			
+			//Find needed value
+			foreach (
+				$keys as
+				$key
+			){
+				//If need to see deeper
+				if (is_array($result)){
+					//If element exists
+					if (isset($result[$key])){
+						//Save it
+						$result = $result[$key];
 					}else{
+						//Return empty string for non-existing elements
+						$result = '';
+						
 						break;
 					}
+				}else{
+					break;
 				}
 			}
-			
-			if (
-				is_object($result) ||
-				is_array($result)
-			){
-				$result = json_encode(
-					$result,
-					//JSON_UNESCAPED_UNICODE — Не кодировать многобайтные символы Unicode | JSON_UNESCAPED_SLASHES — Не экранировать /
-					JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-				);
-			}
-			
-			if (
-				//If template is used
-				!empty($this->params->get_tpl) &&
-				//And result is not empty
-				!empty($result)
-			){
-				$result = \ddTools::parseText([
-					'text' => \ddTools::$modx->getTpl($this->params->get_tpl),
-					'data' => [
-						'snippetResult' => $result
-					]
-				]);
-			}
+		}
+		
+		if (
+			is_object($result) ||
+			is_array($result)
+		){
+			$result = json_encode(
+				$result,
+				//JSON_UNESCAPED_UNICODE — Не кодировать многобайтные символы Unicode | JSON_UNESCAPED_SLASHES — Не экранировать /
+				JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+			);
+		}
+		
+		if (
+			//If template is used
+			!empty($this->params->get_tpl) &&
+			//And result is not empty
+			!empty($result)
+		){
+			$result = \ddTools::parseText([
+				'text' => \ddTools::$modx->getTpl($this->params->get_tpl),
+				'data' => [
+					'snippetResult' => $result
+				]
+			]);
 		}
 		
 		return $result;
