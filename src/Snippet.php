@@ -21,26 +21,42 @@ class Snippet extends \DDTools\Snippet {
 		]
 	;
 	
+	private
+		$storage = []
+	;
+	
+	/**
+	 * __construct
+	 * @version 1.0 (2021-04-28)
+	 * 
+	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringHjsonObject|stringQueryFormatted}
+	 */
+	public function __construct($params = []){
+		//Call base method
+		parent::__construct($params);
+		
+		//Prepare storage
+		switch ($this->params->storage){
+			case 'session':
+				$this->storage = &$_SESSION;
+			break;
+			
+			case 'post':
+			default:
+				$this->storage = &$_POST;
+			break;
+		}
+	}
+	
 	/**
 	 * run
-	 * @version 1.0 (2021-04-28)
+	 * @version 1.0.1 (2021-04-28)
 	 * 
 	 * @return {string}
 	 */
 	public function run(){
 		//The snippet must return an empty string even if result is absent
 		$result = '';
-		
-		switch ($this->params->storage){
-			case 'session':
-				$this->params->storage = &$_SESSION;
-			break;
-			
-			case 'post':
-			default:
-				$this->params->storage = &$_POST;
-			break;
-		}
 		
 		//Save to stash
 		if (!is_null($this->params->save)){
@@ -62,17 +78,17 @@ class Snippet extends \DDTools\Snippet {
 				//If need to extend existing
 				if (
 					$this->params->save_extendExisting &&
-					isset($this->params->storage[$dataName])
+					isset($this->storage[$dataName])
 				){
-					$this->params->storage[$dataName] = \DDTools\ObjectTools::extend([
+					$this->storage[$dataName] = \DDTools\ObjectTools::extend([
 						'objects' => [
-							$this->params->storage[$dataName],
+							$this->storage[$dataName],
 							$dataValue
 						],
 						'overwriteWithEmpty' => $this->params->save_extendExistingWithEmpty
 					]);
 				}else{
-					$this->params->storage[$dataName] = $dataValue;
+					$this->storage[$dataName] = $dataValue;
 				}
 			}
 		}
@@ -92,8 +108,8 @@ class Snippet extends \DDTools\Snippet {
 			;
 			
 			//If parent exists
-			if (isset($this->params->storage[$keys[0]])){
-				$result = $this->params->storage;
+			if (isset($this->storage[$keys[0]])){
+				$result = $this->storage;
 				
 				//Find needed value
 				foreach (
