@@ -15,13 +15,20 @@
 
 ### Установка
 
-Элементы → Сниппеты: Создайте новый сниппет со следующими параметрами:
+
+#### 1. Элементы → Сниппеты: Создайте новый сниппет со следующими параметрами
 
 1. Название сниппета: `ddStash`.
 2. Описание: `<b>1.2.1</b> Сохраняйте данные в формате JSON или QueryString, затем расширяйте по необходимости и используйте позже без запросов к базе данных.`.
 3. Категория: `Core`.
 4. Анализировать DocBlock: `no`.
 5. Код сниппета (php): Вставьте содержимое файла `ddStash_snippet.php` из архива.
+
+
+#### 2. Элементы → Управление файлами
+
+1. Создайте новую папку `assets/snippets/ddStash/`.
+2. Извлеките содержимое архива в неё (кроме файла `ddStash_snippet.php`).
 
 
 ### Описание параметров
@@ -356,6 +363,25 @@
 	"lastName": "Тесла",
 	"discipline": "Электротехника"
 }
+```
+
+
+#### Запустить сниппет через `\DDTools\Snippet::runSnippet` без DB и eval
+
+```php
+//Подключение (MODX)EvolutionCMS.libraries.ddTools
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
+
+//Запуск (MODX)EvolutionCMS.snippets.ddStash
+\DDTools\Snippet::runSnippet([
+	'name' => 'ddStash',
+	'params' => [
+		'get' => 'userData.firstName'
+	]
+]);
 ```
 
 

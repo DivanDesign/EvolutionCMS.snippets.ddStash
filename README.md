@@ -15,13 +15,20 @@ Save data as [JSON](https://en.wikipedia.org/wiki/JSON) or [Query string](https:
 
 ### Installation
 
-Elements → Snippets: Create a new snippet with the following data:
+
+#### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddStash`.
 2. Description: `<b>1.2.1</b> Save data as JSON or QueryString, then extend if needed and use it later without database queries.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddStash_snippet.php` file from the archive.
+
+
+##### 2. Elements → Manage Files
+
+1. Create a new folder `assets/snippets/ddStash/`.
+2. Extract the archive to the folder (except `ddStash_snippet.php`).
 
 
 ### Parameters description
@@ -356,6 +363,25 @@ Returns:
 	"lastName": "Tesla",
 	"discipline": "Electrical engineering"
 }
+```
+
+
+#### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
+
+```php
+//Include (MODX)EvolutionCMS.libraries.ddTools
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
+
+//Run (MODX)EvolutionCMS.snippets.ddStash
+\DDTools\Snippet::runSnippet([
+	'name' => 'ddStash',
+	'params' => [
+		'get' => 'userData.firstName'
+	]
+]);
 ```
 
 
