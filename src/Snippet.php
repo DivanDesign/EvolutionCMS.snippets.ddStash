@@ -7,15 +7,16 @@ class Snippet extends \DDTools\Snippet {
 		
 		$params = [
 			//Defaults
-			'save' => null,
+			'save' => [],
 			'save_extendExisting' => false,
 			'save_extendExistingWithEmpty' => true,
-			'get' => null,
+			'get' => '',
 			'get_tpl' => null,
 			'storage' => 'post'
 		],
 		
 		$paramsTypes = [
+			'save' => 'objectArray',
 			'save_extendExisting' => 'boolean',
 			'save_extendExistingWithEmpty' => 'boolean'
 		]
@@ -50,7 +51,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.1 (2021-04-28)
+	 * @version 1.0.2 (2021-04-28)
 	 * 
 	 * @return {string}
 	 */
@@ -59,12 +60,12 @@ class Snippet extends \DDTools\Snippet {
 		$result = '';
 		
 		//Save to stash
-		if (!is_null($this->params->save)){
+		if (!empty($this->params->save)){
 			$this->run_save();
 		}
 		
 		//Get from stash
-		if (!is_null($this->params->get)){
+		if (!empty($this->params->get)){
 			$result = $this->run_get();
 		}
 		
@@ -73,16 +74,11 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run_save
-	 * @version 1.0 (2021-04-28)
+	 * @version 1.0.1 (2021-04-28)
 	 * 
 	 * @return {void}
 	 */
 	private function run_save(){
-		$this->params->save = \DDTools\ObjectTools::convertType([
-			'object' => $this->params->save,
-			'type' => 'objectArray'
-		]);
-		
 		foreach (
 			$this->params->save as
 			$dataName =>
