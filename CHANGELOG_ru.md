@@ -1,7 +1,25 @@
 # (MODX)EvolutionCMS.snippets.ddStash changelog
 
 
-## Version 1.2.1 (2020-05-08)
+## Версия 1.3 (2021-04-28)
+* \* Внимание! Требуется PHP >= 5.6.
+* \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.49.1.
+* \+ Параметры → `save`: Также может быть задан, как [HJSON](https://hjson.github.io/) или как нативный PHP объект или массив (например, для вызовов через `$modx->runSnippet`).
+* \+ Запустить сниппет без DB и eval можно через `\DDTools\Snippet::runSnippet` (см. примеры в README).
+* \+ `\ddStash\Snippet`: Новый класс. Весь код сниппета перенесён туда.
+* \* README:
+	* \* Документация:
+		* \+ Установка → Используя (MODX)EvolutionCMS.libraries.ddInstaller.
+		* \* Примеры: Исправлен некорректный формат JSON.
+	* \+ Ссылки.
+* \* Composer.json:
+	* \+ `homepage`.
+	* \+ `support`
+	* \+ `authors`.
+	* \* `require` → `dd/evolutioncms-libraries-ddtools`: Исправлено устаревшее название библиотеки.
+
+
+## Версия 1.2.1 (2020-05-08)
 * \* При попытке получить несуществующий элемент будет возвращена пустая строка.
 
 

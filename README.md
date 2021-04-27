@@ -22,7 +22,7 @@ Save data as [JSON](https://en.wikipedia.org/wiki/JSON) or [Query string](https:
 ##### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddStash`.
-2. Description: `<b>1.2.1</b> Save data as JSON or QueryString, then extend if needed and use it later without database queries.`.
+2. Description: `<b>1.3</b> Save data as JSON or QueryString, then extend if needed and use it later without database queries.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddStash_snippet.php` file from the archive.
