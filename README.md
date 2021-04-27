@@ -29,8 +29,12 @@ Elements → Snippets: Create a new snippet with the following data:
 * `save`
 	* Desctription: Data to save in stash. Nested objects are supported too, see examples below.
 	* Valid values:
-		* `stirngJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
 		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* It can also be set as a native PHP object or array (e. g. for calls through `$modx->runSnippet`):
+			* `arrayAssociative`
+			* `object`
 	* Default value: —
 	
 * `save_extendExisting`

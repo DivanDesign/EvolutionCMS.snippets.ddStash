@@ -53,7 +53,10 @@ switch ($params->storage){
 
 //Save to stash
 if (!is_null($params->save)){
-	$params->save = \ddTools::encodedStringToArray($params->save);
+	$params->save = \DDTools\ObjectTools::convertType([
+		'object' => $params->save,
+		'type' => 'objectArray'
+	]);
 	
 	foreach (
 		$params->save as
