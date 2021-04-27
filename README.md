@@ -16,7 +16,10 @@ Save data as [JSON](https://en.wikipedia.org/wiki/JSON) or [Query string](https:
 ### Installation
 
 
-#### 1. Elements → Snippets: Create a new snippet with the following data
+#### Manually
+
+
+##### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddStash`.
 2. Description: `<b>1.2.1</b> Save data as JSON or QueryString, then extend if needed and use it later without database queries.`.
@@ -25,10 +28,32 @@ Save data as [JSON](https://en.wikipedia.org/wiki/JSON) or [Query string](https:
 5. Snippet code (php): Insert content of the `ddStash_snippet.php` file from the archive.
 
 
-##### 2. Elements → Manage Files
+###### 2. Elements → Manage Files
 
 1. Create a new folder `assets/snippets/ddStash/`.
 2. Extract the archive to the folder (except `ddStash_snippet.php`).
+
+
+#### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
+
+Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
+
+```php
+//Include (MODX)EvolutionCMS.libraries.ddInstaller
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddInstaller/require.php'
+);
+
+//Install (MODX)EvolutionCMS.snippets.ddStash
+\DDInstaller::install([
+	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddStash',
+	'type' => 'snippet'
+]);
+```
+
+* If `ddStash` is not exist on your site, `ddInstaller` will just install it.
+* If `ddStash` is already exist on your site, `ddInstaller` will check it version and update it if needed.
 
 
 ### Parameters description

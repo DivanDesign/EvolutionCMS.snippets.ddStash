@@ -16,7 +16,10 @@
 ### Установка
 
 
-#### 1. Элементы → Сниппеты: Создайте новый сниппет со следующими параметрами
+#### Вручную
+
+
+##### 1. Элементы → Сниппеты: Создайте новый сниппет со следующими параметрами
 
 1. Название сниппета: `ddStash`.
 2. Описание: `<b>1.2.1</b> Сохраняйте данные в формате JSON или QueryString, затем расширяйте по необходимости и используйте позже без запросов к базе данных.`.
@@ -25,10 +28,32 @@
 5. Код сниппета (php): Вставьте содержимое файла `ddStash_snippet.php` из архива.
 
 
-#### 2. Элементы → Управление файлами
+##### 2. Элементы → Управление файлами
 
 1. Создайте новую папку `assets/snippets/ddStash/`.
 2. Извлеките содержимое архива в неё (кроме файла `ddStash_snippet.php`).
+
+
+#### Используя [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
+
+Просто вызовите следующий код в своих исходинках или модуле [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
+
+```php
+//Подключение (MODX)EvolutionCMS.libraries.ddInstaller
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddInstaller/require.php'
+);
+
+//Установка (MODX)EvolutionCMS.snippets.ddStash
+\DDInstaller::install([
+	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddStash',
+	'type' => 'snippet'
+]);
+```
+
+* Если `ddStash` отсутствует на вашем сайте, `ddInstaller` просто установит его.
+* Если `ddStash` уже есть на вашем сайте, `ddInstaller` проверит его версию и обновит, если нужно. 
 
 
 ### Описание параметров
