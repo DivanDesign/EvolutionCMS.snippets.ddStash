@@ -109,7 +109,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run_get
-	 * @version 1.0 (2021-04-28)
+	 * @version 1.0.1 (2021-04-28)
 	 * 
 	 * @return {string}
 	 */
@@ -159,11 +159,10 @@ class Snippet extends \DDTools\Snippet {
 			is_object($result) ||
 			is_array($result)
 		){
-			$result = json_encode(
-				$result,
-				//JSON_UNESCAPED_UNICODE — Не кодировать многобайтные символы Unicode | JSON_UNESCAPED_SLASHES — Не экранировать /
-				JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-			);
+			$result = \DDTools\ObjectTools::convertType([
+				'object' => $result,
+				'type' => 'stringJsonAuto'
+			]);
 		}
 		
 		if (
