@@ -8,53 +8,55 @@
  * @copyright 2019–2020 DD Group {@link http://www.DivanDesign.biz }
  */
 
+//# Include
 //Include (MODX)EvolutionCMS.libraries.ddTools
 require_once(
 	$modx->getConfig('base_path') .
 	'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
+
+//# Prepare params
+$params = \DDTools\ObjectTools::extend([
+	'objects' => [
+		//Defaults
+		(object) [
+			'save' => null,
+			'save_extendExisting' => false,
+			'save_extendExistingWithEmpty' => true,
+			'get' => null,
+			'get_tpl' => null,
+			'storage' => 'post'
+		],
+		$params
+	]
+]);
+
+$params->save_extendExisting = boolval($params->save_extendExisting);
+$params->save_extendExistingWithEmpty = boolval($params->save_extendExistingWithEmpty);
+
+
+//# Run
 //The snippet must return an empty string even if result is absent
 $snippetResult = '';
 
-
-//Prepare storage
-if (!isset($storage)){
-	$storage = 'post';
-}
-
-switch ($storage){
+switch ($params->storage){
 	case 'session':
-		$storage = &$_SESSION;
+		$params->storage = &$_SESSION;
 	break;
 	
 	case 'post':
 	default:
-		$storage = &$_POST;
+		$params->storage = &$_POST;
 	break;
 }
 
-
 //Save to stash
-if (isset($save)){
-	$save_extendExisting =
-		isset($save_extendExisting) ?
-		boolval($save_extendExisting) :
-		false
-	;
-	$save_extendExistingWithEmpty =
-		(
-			isset($save_extendExistingWithEmpty) &&
-			$save_extendExistingWithEmpty == '0'
-		) ?
-		false :
-		true
-	;
-	
-	$save = \ddTools::encodedStringToArray($save);
+if (!is_null($params->save)){
+	$params->save = \ddTools::encodedStringToArray($params->save);
 	
 	foreach (
-		$save as
+		$params->save as
 		$dataName =>
 		$dataValue
 	){
@@ -65,28 +67,28 @@ if (isset($save)){
 		
 		//If need to extend existing
 		if (
-			$save_extendExisting &&
-			isset($storage[$dataName])
+			$params->save_extendExisting &&
+			isset($params->storage[$dataName])
 		){
-			$storage[$dataName] = \DDTools\ObjectTools::extend([
+			$params->storage[$dataName] = \DDTools\ObjectTools::extend([
 				'objects' => [
-					$storage[$dataName],
+					$params->storage[$dataName],
 					$dataValue
 				],
-				'overwriteWithEmpty' => $save_extendExistingWithEmpty
+				'overwriteWithEmpty' => $params->save_extendExistingWithEmpty
 			]);
 		}else{
-			$storage[$dataName] = $dataValue;
+			$params->storage[$dataName] = $dataValue;
 		}
 	}
 }
 
 //Get from stash
-if (isset($get)){
+if (!is_null($params->get)){
 	//Unfolding support (e. g. `parentKey.someKey.0`)
 	$keys =	explode(
 		'.',
-		$get
+		$params->get
 	);
 	
 	//Correct parent key
@@ -96,8 +98,8 @@ if (isset($get)){
 	;
 	
 	//If parent exists
-	if (isset($storage[$keys[0]])){
-		$snippetResult = $storage;
+	if (isset($params->storage[$keys[0]])){
+		$snippetResult = $params->storage;
 		
 		//Find needed value
 		foreach (
@@ -135,12 +137,12 @@ if (isset($get)){
 	
 	if (
 		//If template is used
-		isset($get_tpl) &&
+		!empty($params->get_tpl) &&
 		//And result is not empty
 		!empty($snippetResult)
 	){
 		$snippetResult = \ddTools::parseText([
-			'text' => $modx->getTpl($get_tpl),
+			'text' => $modx->getTpl($params->get_tpl),
 			'data' => [
 				'snippetResult' => $snippetResult
 			]
