@@ -109,13 +109,11 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run_get
-	 * @version 1.0.1 (2021-04-28)
+	 * @version 1.0.2 (2023-03-09)
 	 * 
 	 * @return {string}
 	 */
 	private function run_get(){
-		$result = '';
-		
 		//Unfolding support (e. g. `parentKey.someKey.0`)
 		$keys =	explode(
 			'.',
@@ -128,34 +126,17 @@ class Snippet extends \DDTools\Snippet {
 			$keys[0]
 		;
 		
-		//If parent exists
-		if (isset($this->storage[$keys[0]])){
-			$result = $this->storage;
-			
-			//Find needed value
-			foreach (
-				$keys as
-				$key
-			){
-				//If need to see deeper
-				if (is_array($result)){
-					//If element exists
-					if (isset($result[$key])){
-						//Save it
-						$result = $result[$key];
-					}else{
-						//Return empty string for non-existing elements
-						$result = '';
-						
-						break;
-					}
-				}else{
-					break;
-				}
-			}
-		}
+		$result = \DDTools\ObjectTools::getPropValue([
+			'object' => $this->storage,
+			'propName' => implode(
+				'.',
+				$keys
+			)
+		]);
 		
-		if (
+		if (is_null($result)){
+			$result = '';
+		}elseif (
 			is_object($result) ||
 			is_array($result)
 		){
