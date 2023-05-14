@@ -109,7 +109,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run_get
-	 * @version 1.0.2 (2023-03-09)
+	 * @version 1.0.3 (2023-05-14)
 	 * 
 	 * @return {string}
 	 */
@@ -153,7 +153,7 @@ class Snippet extends \DDTools\Snippet {
 			!empty($result)
 		){
 			$result = \ddTools::parseText([
-				'text' => \ddTools::$modx->getTpl($this->params->get_tpl),
+				'text' => \ddTools::getTpl($this->params->get_tpl),
 				'data' => [
 					'snippetResult' => $result
 				]
