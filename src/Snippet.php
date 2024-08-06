@@ -6,7 +6,7 @@ class Snippet extends \DDTools\Snippet {
 		$version = '1.3.0',
 		
 		$params = [
-			//Defaults
+			// Defaults
 			'save' => [],
 			'save_extendExisting' => false,
 			'save_extendExistingWithEmpty' => true,
@@ -28,15 +28,15 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * __construct
-	 * @version 1.0 (2021-04-28)
+	 * @version 1.0.1 (2024-08-06)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringHjsonObject|stringQueryFormatted}
 	 */
 	public function __construct($params = []){
-		//Call base method
+		// Call base method
 		parent::__construct($params);
 		
-		//Prepare storage
+		// Prepare storage
 		switch ($this->params->storage){
 			case 'session':
 				$this->storage = &$_SESSION;
@@ -51,20 +51,20 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.2 (2021-04-28)
+	 * @version 1.0.3 (2024-08-06)
 	 * 
 	 * @return {string}
 	 */
 	public function run(){
-		//The snippet must return an empty string even if result is absent
+		// The snippet must return an empty string even if result is absent
 		$result = '';
 		
-		//Save to stash
+		// Save to stash
 		if (!empty($this->params->save)){
 			$this->run_save();
 		}
 		
-		//Get from stash
+		// Get from stash
 		if (!empty($this->params->get)){
 			$result = $this->run_get();
 		}
@@ -74,7 +74,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run_save
-	 * @version 1.0.1 (2021-04-28)
+	 * @version 1.0.2 (2024-08-06)
 	 * 
 	 * @return {void}
 	 */
@@ -89,7 +89,7 @@ class Snippet extends \DDTools\Snippet {
 				$dataName
 			;
 			
-			//If need to extend existing
+			// If need to extend existing
 			if (
 				$this->params->save_extendExisting &&
 				isset($this->storage[$dataName])
@@ -109,18 +109,18 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run_get
-	 * @version 1.0.3 (2023-05-14)
+	 * @version 1.0.4 (2024-08-06)
 	 * 
 	 * @return {string}
 	 */
 	private function run_get(){
-		//Unfolding support (e. g. `parentKey.someKey.0`)
+		// Unfolding support (e. g. `parentKey.someKey.0`)
 		$keys =	explode(
 			'.',
 			$this->params->get
 		);
 		
-		//Correct parent key
+		// Correct parent key
 		$keys[0] =
 			'ddStash.' .
 			$keys[0]
@@ -147,9 +147,9 @@ class Snippet extends \DDTools\Snippet {
 		}
 		
 		if (
-			//If template is used
+			// If template is used
 			!empty($this->params->get_tpl) &&
-			//And result is not empty
+			// And result is not empty
 			!empty($result)
 		){
 			$result = \ddTools::parseText([
